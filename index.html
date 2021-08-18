@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Unnamed</title>
+        <script src="node_modules/omega_num.js/OmegaNum.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/other.js"></script>
+        <script src="js/primary_points.js"></script>
+        <link href="style.css" rel="stylesheet">
+        <link href="tabs.css" rel="stylesheet">
+    </head>
+    <body style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <p id="money"></p>
+        <p id="mps"></p>
+        <p id="primary"></p>
+        <button onclick="addprimary()" id="primaryadd"></button>
+        <div class="tab">
+            <button class="tablinks" onclick="openCity(event, 'Points')">Points</button>
+            <button class="tablinks" onclick="openCity(event, 'Primary')">Primary</button>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div id="Points" class="tabcontent">
+            <p id="automoney"></p>
+            <div class="upgrades">
+                <button id="upgrade1" onclick="upgrade1()"></button>
+                <button id="upgrade2" onclick="upgrade2()"></button>
+                <button id="upgrade3" onclick="upgrade3()"></button>
+                <button id="upgrade4" onclick="upgrade4()"></button>
+            </div>
+        </div>
+        <div id="Primary" class="tabcontent">
+            <p id="primary"></p>
+            <p id="gentotal"></p>
+            <div id="generators">
+                <span id="gen1"></span><span id="gen1amount"></span><button id="gen1cost" onclick="gen1()"></button>
+                <br>
+                <span id="gen2"></span><span id="gen2amount"></span><button id="gen2cost" onclick="gen2()"></button>
+                <br>
+                <span id="gen3"></span><span id="gen3amount"></span><button id="gen3cost" onclick="gen3()"></button>
+            </div>
+            <div id="gupgrades">
+                <br>
+                <br>
+                <button id="gupgrade1" onclick="gupgrade1()"></button>
+                <button id="gupgrade2" onclick="gupgrade2()"></button>
+                <button id="gupgrade3" onclick="gupgrade3()"></button>
+                <button id="gupgrade4" onclick="gupgrade4()"></button>
+                <button id="gupgrade5" onclick="gupgrade5()"></button>
+                <button id="gupgrade6" onclick="gupgrade6()"></button>
+                <button id="gupgrade7" onclick="gupgrade7()"></button>
+                <button id="gupgrade8" onclick="gupgrade8()"></button>
+                <button id="gupgrade9" onclick="gupgrade9()"></button>
+            </div>
+        </div>
+    </body>
+</html>
