@@ -16,8 +16,9 @@
         <p id="primary"></p>
         <button onclick="addprimary()" id="primaryadd"></button>
         <div class="tab">
-            <button class="tablinks" onclick="openCity(event, 'Points')">Points</button>
+            <button class="tablinks" onclick="openCity(event, 'Points')" id="points">Points</button>
             <button class="tablinks" onclick="openCity(event, 'Primary')">Primary</button>
+            <button class="tablinks" onclick="openCity(event, 'Challenges')" id="chal">Challenges</button>
         </div>
         <br>
         <br>
@@ -29,17 +30,24 @@
                 <button id="upgrade2" onclick="upgrade2()"></button>
                 <button id="upgrade3" onclick="upgrade3()"></button>
                 <button id="upgrade4" onclick="upgrade4()"></button>
+                <button id="upgrade5" onclick="upgrade5()"></button>
+                <button id="upgrade6" onclick="upgrade6()"></button>
             </div>
+            <br>
+            <br>
+            <span id="universes"></span>
+            <button id="universegain" onclick="universes()"></button>
         </div>
         <div id="Primary" class="tabcontent">
             <p id="primary"></p>
             <p id="gentotal"></p>
             <div id="generators">
                 <span id="gen1"></span><span id="gen1amount"></span><button id="gen1cost" onclick="gen1()"></button>
-                <br>
+                <p id="gen1mult"></p>
                 <span id="gen2"></span><span id="gen2amount"></span><button id="gen2cost" onclick="gen2()"></button>
-                <br>
+                <p id="gen2mult"></p>
                 <span id="gen3"></span><span id="gen3amount"></span><button id="gen3cost" onclick="gen3()"></button>
+                <p id="gen3mult"></p>
             </div>
             <div id="gupgrades">
                 <br>
@@ -53,7 +61,24 @@
                 <button id="gupgrade7" onclick="gupgrade7()"></button>
                 <button id="gupgrade8" onclick="gupgrade8()"></button>
                 <button id="gupgrade9" onclick="gupgrade9()"></button>
+                <button id="gupgrade10" onclick="gupgrade10()"></button>
+                <button id="gupgrade11" onclick="gupgrade11()"></button>
+                <button id="gupgrade12" onclick="gupgrade12()"></button>
+                <button id="gupgrade13" onclick="gupgrade13()"></button>
+                <button id="gupgrade14" onclick="gupgrade14()"></button>
+                <button id="gupgrade15" onclick="gupgrade15()"></button>
+                <button id="gupgrade16" onclick="gupgrade16()"></button>
+                <button id="gupgrade17" onclick="gupgrade17()"></button>
+                <button id="gupgrade18" onclick="gupgrade18()"></button>
             </div>
+        </div>
+        <div id="Challenges" class="tabcontent">
+            <button id="chal1" onclick="challenge1enter()"></button>
+            <button id="chal2" onclick="challenge2enter()"></button>
+            <button id="chal3" onclick="challenge3enter()"></button>
+            <button id="chal4" onclick="challenge4enter()"></button>
+            <button id="chal5" onclick="challenge5enter()"></button>
+            <button id="chal6" onclick="challenge6enter()"></button>
         </div>
     </body>
 </html>
