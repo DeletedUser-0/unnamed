@@ -1,6 +1,7 @@
 function Load() {
     player = new Player(JSON.parse(localStorage.player));
-    console.log("Save loaded");
+    console.log(`The page and all it's variables were loaded successfully.`);
+    console.log(`Here's your number: ${Math.round(OmegaNum.pow(10, OmegaNum.times(Math.random(), 3.05)))}. If it's more than 1000, consider yourself lucky!`);
     return player.obj || "default";
 };
 
@@ -15,9 +16,9 @@ function notate(n = new OmegaNum(0)) {
     if (!n.array[1]) {
         let e = Math.floor(Math.log10(n.array[0]));
         let m = n.array[0] / 10 ** e;
-        return e < 3 ? n.toPrecision(3) : `${m.toPrecision(3)}e${e}`;
+        return e < 3 ? n.toPrecision(3) : `${m.toFixed(2)}e${e}`;
     } else if (n.array[1] < 2) {
-        return `${Math.pow(10, n.array[0] - Math.floor(n.array[0])).toPrecision(3)}e${Math.floor(n.array[0]).toLocaleString("pt-PT")}</sup>`;
+        return `${Math.pow(10, n.array[0] - Math.floor(n.array[0])).toFixed(2)}e${Math.floor(n.array[0]).toLocaleString("pt-PT")}</sup>`;
     } else {
         return `${"e".repeat(n.array[1])}${Math.floor(n.array[0])}`;
     };
@@ -43,8 +44,10 @@ function notate2(n = new OmegaNum(0)) {
 };
 
 window.setInterval(function () {
-    localStorage.player = JSON.stringify(player);
-}, 3000)
+    if (player.challenge.active == false) {
+        localStorage.player = JSON.stringify(player);
+    };
+}, 30 * 1000)
 
 Load();
 
@@ -63,4 +66,9 @@ function openCity(evt, cityName) {
 
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
-}
+};
+
+
+window.onbeforeunload = function () {
+    refresh();
+};
