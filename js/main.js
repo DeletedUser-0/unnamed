@@ -502,6 +502,8 @@ function upgrade1() {
     };
 };
 
+player.money.second = 1;
+
 function upgrade2() {
     while (OmegaNum.cmp(player.money.amount, player.upgrade2.cost) >= 0) {
         player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade2.cost);
