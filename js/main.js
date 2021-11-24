@@ -470,6 +470,11 @@ window.setInterval (function() {
     };
 }, 20);
 
+player.money.maxbase = 1;
+player.money.max = 1;
+player.money.second = 1;
+player.money.base = 1;
+
 function upgrade1() {
     while (OmegaNum.cmp(player.money.amount, player.upgrade1.cost) >= 0) {
         player.upgrade1.level = OmegaNum.add(player.upgrade1.level, 1);
@@ -501,8 +506,6 @@ function upgrade1() {
         };
     };
 };
-
-player.money.second = 1;
 
 function upgrade2() {
     while (OmegaNum.cmp(player.money.amount, player.upgrade2.cost) >= 0) {
