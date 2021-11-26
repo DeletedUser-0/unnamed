@@ -10,7 +10,7 @@ window.setInterval(function() {
     document.getElementById("upgrade2").innerHTML = `Increase points production by <strong>${notate2(player.upgrade2.effect)}x</strong> <br> Cost: <strong>${notate(player.upgrade2.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade2.level).toLocaleString("pt-PT")}`;
     document.getElementById("upgrade3").innerHTML = `First upgrade becomes cheaper (x<strong><sup>${notate(player.upgrade3.effect)}</sup></strong>) <br> Cost: <strong>${notate(player.upgrade3.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade3.level).toLocaleString("pt-PT")}`;
     document.getElementById("upgrade4").innerHTML = `The automatic points earning multiplier becomes better (x<strong><sup>${notate(player.upgrade4.effect)}</sup></strong>) <br> Cost: <strong>${notate(player.upgrade4.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade4.level).toLocaleString("pt-PT")}`;
-    document.getElementById("universes").innerHTML = `Universes: ${OmegaNum.floor(player.universes.amount)} (x${notate(OmegaNum.pow(player.universes.effect, player.universes.amount))})`;
+    document.getElementById("universes").innerHTML = `Universes: <b>${OmegaNum.floor(player.universes.amount)}</b> (x${notate(OmegaNum.pow(player.universes.effect, player.universes.amount))})`;
     document.getElementById("universegain").innerHTML = `Get another universe (<b>${notate(player.universes.requires)}</b> points)`
     // AFTER INFINITY
     if ((OmegaNum.cmp(player.money.amount, new OmegaNum("1.7932e308")) >= 0) || OmegaNum.cmp(player.primary.reset, 1) >= 0) {
