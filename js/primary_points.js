@@ -99,7 +99,8 @@ function addprimary() {
                 document.getElementById("gupgrade1").style.display = "block-inline";
             };
             if (player.primary.reset == 1) {
-                refresh()  
+                refresh();
+                resetprimary();
             };
             if (player.gupgrade7.bought == false) {
                 player.money.amount = 0;
