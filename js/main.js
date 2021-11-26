@@ -1,298 +1,827 @@
-window.setInterval(function() {
-    document.getElementById("money").innerHTML = `<span style="font-size: 50%; color: grey;">You have</span> <strong>${notate(player.money.amount)}</strong> <span style="font-size: 50%; color: grey;">points.</span>`;
-    document.getElementById("mps").innerHTML = `+${notate(player.money.second)} points/s`;
-    if (OmegaNum.cmp(player.upgrade1.effect, 2) == 1) {
-        document.getElementById("upgrade1").innerHTML = `Increase points production by <strong>${notate(player.upgrade1.effect)}x</strong> <br> Cost: <strong>${notate(player.upgrade1.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade1.level).toLocaleString("pt-PT")}`;
-    } else {
-        document.getElementById("upgrade1").innerHTML = `Increase points production by <strong>${notate(OmegaNum.sub(OmegaNum.times(player.upgrade1.effect, 100), 100))}%</strong> <br> Cost: <strong>${notate(player.upgrade1.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade1.level).toLocaleString("pt-PT")}`;
-    }
-    document.getElementById("automoney").innerHTML = `Increases automatically the amount of points per second by <strong>${notate(player.auto.effect)}x</strong>: <br> Requires <strong>${notate(player.auto.requires)}</strong> points (${notate2(player.auto.level)})`;
-    document.getElementById("upgrade2").innerHTML = `Increase points production by <strong>${notate2(player.upgrade2.effect)}x</strong> <br> Cost: <strong>${notate(player.upgrade2.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade2.level).toLocaleString("pt-PT")}`;
-    document.getElementById("upgrade3").innerHTML = `First upgrade becomes cheaper (x<strong><sup>${notate(player.upgrade3.effect)}</sup></strong>) <br> Cost: <strong>${notate(player.upgrade3.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade3.level).toLocaleString("pt-PT")}`;
-    document.getElementById("upgrade4").innerHTML = `The automatic points earning multiplier becomes better (x<strong><sup>${notate(player.upgrade4.effect)}</sup></strong>) <br> Cost: <strong>${notate(player.upgrade4.cost)}</strong> points <br> Level: ${Math.floor(player.upgrade4.level).toLocaleString("pt-PT")}`;
-    document.getElementById("universes").innerHTML = `Universes: <b>${OmegaNum.floor(player.universes.amount)}</b> (x${notate(OmegaNum.pow(player.universes.effect, player.universes.amount))})`;
-    document.getElementById("universegain").innerHTML = `Get another universe (<b>${notate(player.universes.requires)}</b> points)`
-    // AFTER INFINITY
-    if ((OmegaNum.cmp(player.money.amount, new OmegaNum("1.7932e308")) >= 0) || OmegaNum.cmp(player.primary.reset, 1) >= 0) {
-        document.getElementById("chal").style.display = "block";
-        document.getElementById("primary").innerHTML = `You have <strong>${notate(player.primary.amount)}</strong> primary points.`;
-        if (player.gupgrade7.bought == false) {
-            document.getElementById("primaryadd").innerHTML = `Receive <strong>${notate(player.primary.earn)}</strong> primary points.`;
-        } else if (player.gupgrade7.bought == true) {
-            document.getElementById("primaryadd").innerHTML = `+<strong>${notate(player.primary.earn)}</strong>/s.`;
+class Player {
+    constructor(data) {
+
+        this.money = {
+            amount: data?.money?.amount || 0,
+            second: data?.money?.second || 1,
+            translate: data?.money?.translate || 1,
+            base: data?.money?.base || 1,
+            max: data?.money?.max || 0,
+            maxbase: data?.money?.maxbase || 0,
         };
-        document.getElementById("gentotal").innerHTML = `You have <strong style="font-size: 125%;">${notate(player.gen1.boost)}</strong> sub-points, translating to </strong style="font-size: 125%;">${notate(player.money.translate)}x</strong> on points receivement. <br> <br> <span style="font-size: 75%">+${notate(OmegaNum.times(player.gen1.total, player.gen1.mult))} sub-points/s.</span>`;
-        if (OmegaNum.cmp(player.gen1.mult, 1) <= 0) {
-            document.getElementById("gen1").innerHTML = `1<sup>st</sup> Generator (x1.00)`;
-        } else {
-            document.getElementById("gen1").innerHTML = `1<sup>st</sup> Generator (x${notate(player.gen1.mult)})`;
+
+        this.upgrade1 = {
+            cost: data?.upgrade1?.cost || 10,
+            effect: data?.upgrade1?.effect || 2,
+            level: data?.upgrade1?.level || 0,
         };
-        document.getElementById("gen1amount").innerHTML = `${notate(player.gen1.total)} (${player.gen1.level})`;
-        document.getElementById("gen1cost").innerHTML = `Cost: <b>${notate(player.gen1.cost)}</b> Primary Points`;
-        if (OmegaNum.cmp(OmegaNum.pow(OmegaNum.div(player.gen1.total, player.gen1.before), 50).times(100).sub(100).toFixed(2), 100) < 0) {
-            document.getElementById("gen1mult").innerHTML = `+${OmegaNum.pow(OmegaNum.div(player.gen1.total, player.gen1.before), 50).times(100).sub(100).toFixed(2)}%/s`;
-        } else {
-            document.getElementById("gen1mult").innerHTML = `+${notate(OmegaNum.pow(OmegaNum.div(player.gen1.total, player.gen1.before), 50))}x/s`;
+
+        this.auto = {
+            requires: data?.auto?.requires || 1000,
+            effect: data?.auto?.effect || 3,
+            level: data?.auto?.level || 0,
         };
-        if (OmegaNum.cmp(player.gen2.mult, 1) <= 0) {
-            document.getElementById("gen2").innerHTML = `2<sup>nd</sup> Generator (x1.00)`;
-        } else {
-            document.getElementById("gen2").innerHTML = `2<sup>nd</sup> Generator (x${notate(player.gen2.mult)})`;
+
+        this.upgrade2 ={
+            cost: data?.upgrade2?.cost || 1e15,
+            effect: data?.upgrade2?.effect || 4,
+            level: data?.upgrade2?.level || 0,
         };
-        document.getElementById("gen2amount").innerHTML = `${notate(player.gen2.total)} (${player.gen2.level})`;
-        document.getElementById("gen2cost").innerHTML = `Cost: <b>${notate2(player.gen2.cost)}</b> Primary Points`;
-        if (OmegaNum.cmp(OmegaNum.pow(OmegaNum.div(player.gen2.total, player.gen2.before), 50).times(100).sub(100).toFixed(2), 100) < 0) {
-            document.getElementById("gen2mult").innerHTML = `+${OmegaNum.pow(OmegaNum.div(player.gen2.total, player.gen2.before), 50).times(100).sub(100).toFixed(2)}%/s`;
-        } else {
-            document.getElementById("gen2mult").innerHTML = `+${notate(OmegaNum.pow(OmegaNum.div(player.gen2.total, player.gen2.before), 50))}x/s`;
+
+        this.upgrade3 = {
+            cost: data?.upgrade3?.cost || 1e79,
+            effect: data?.upgrade3?.effect || 1,
+            level: data?.upgrade3?.level || 0,
         };
-        if (OmegaNum.cmp(player.gen3.mult, 1) <= 0) {
-            document.getElementById("gen3").innerHTML = `3<sup>rd</sup> Generator (x1.00)`;
-        } else {
-            document.getElementById("gen3").innerHTML = `3<sup>rd</sup> Generator (x${notate(player.gen3.mult)})`;
+
+        this.upgrade4 = {
+            cost: data?.upgrade4?.cost || 1e113,
+            effect: data?.upgrade4?.effect || 1,
+            level: data?.upgrade4?.level || 0,
         };
-        if (player.gupgrade12.bought == false) {
-            document.getElementById("gen3amount").innerHTML = `${player.gen3.level}`;
-            document.getElementById("gen3mult").style.display = `none`;
-        } else {
-            document.getElementById("gen3amount").innerHTML = `${notate(player.gen3.amount)} (${player.gen3.level})`;
-            if (OmegaNum.cmp(OmegaNum.pow(OmegaNum.div(player.gen3.amount, player.gen3.before), 50).times(100).sub(100).toFixed(2), 100) < 0) {
-                document.getElementById("gen3mult").innerHTML = `+${OmegaNum.pow(OmegaNum.div(player.gen3.amount, player.gen3.before), 50).times(100).sub(100).toFixed(2)}%/s`;
-            } else {
-                document.getElementById("gen3mult").innerHTML = `+${notate(OmegaNum.pow(OmegaNum.div(player.gen3.amount, player.gen3.before), 50))}x/s`;
-            };
+
+        this.universes = {
+            amount: data?.universes?.amount || 0,
+            effect: data?.universes?.effect || 4,
+            requires: data?.universes?.requires || 1e60,
         };
-        document.getElementById("gen3cost").innerHTML = `Cost: <b>${notate2(player.gen3.cost)}</b> Primary Points`;
-        if (player.gupgrade1.bought == false) {
-            document.getElementById("gupgrade1").innerHTML = `Buys main upgrades automatically<br> <br> Cost: <strong>10</strong> Primary Points.`;
-            document.getElementById("gupgrade2").style.display = "none";
-        } else {
-            document.getElementById("gupgrade1").innerHTML = `Buys main upgrades automatically<br> <br> Upgraded`;
-            document.getElementById("gupgrade1").style.backgroundColor = "lightgreen";
+
+        this.primary = {
+            amount: data?.primary?.amount || 0,
+            earn: data?.primary?.earn || 0,
+            reset: data?.primary?.reset || 0,
         };
-        if (player.gupgrade2.bought == false) {
-            document.getElementById("gupgrade2").innerHTML = `Decrease main upgrades cost scailing <br> <br> Cost: <strong>250</strong> Primary Points.`;
-            document.getElementById("gupgrade3").style.display = "none";
-        } else {
-            document.getElementById("gupgrade2").innerHTML = `Decrease main upgrades cost scailing <br> <br> Upgraded`;
-            document.getElementById("gupgrade2").style.backgroundColor = "lightgreen";
+
+        this.gen1 = {
+            cost: data?.gen1?.cost || 1,
+            costupdate: data?.gen1?.costupdate || 1,
+            level: data?.gen1?.level || 0,
+            mult: data?.gen1?.mult || 0.001,
+            boost: data?.gen1?.boost || 1,
+            total: data?.gen1?.total || 0,
+            before: data?.gen1?.before || 0,
         };
-        if (player.gupgrade3.bought == false) {
-            document.getElementById("gupgrade3").innerHTML = `Earns 100% of primary points earning per second <br> <br> Cost: <strong>1.00e4</strong> Primary Points.`;
-            document.getElementById("gupgrade4").style.display = "none";
-        } else {
-            document.getElementById("gupgrade3").innerHTML = `Earns 100% of primary points earning per second <br> <br> Upgraded`;
-            document.getElementById("gupgrade3").style.backgroundColor = "lightgreen";
+
+        this.gen2 = {
+            cost: data?.gen2?.cost || 2,
+            costupdate: data?.gen2?.costupdate || 2,
+            level: data?.gen2?.level || 0,
+            mult: data?.gen2?.mult || 0.00137,
+            total: data?.gen2?.total || 0,
+            before: data?.gen2?.before || 0,
         };
-        if (player.gupgrade4.bought == false) {
-            document.getElementById("gupgrade4").innerHTML = `Increases sub-points earning <br> <br> Cost: <strong>1.00e6</strong> Primary Points.`;
-            document.getElementById("gupgrade5").style.display = "none";
-        } else {
-            document.getElementById("gupgrade4").innerHTML = `Increases sub-points earning <br> <br> Upgraded`;
-            document.getElementById("gupgrade4").style.backgroundColor = "lightgreen";
+
+        this.gen3 = {
+            cost: data?.gen3?.cost || 100,
+            costupdate: data?.gen3?.costupdate || 100,
+            level: data?.gen3?.level || 0,
+            amount: data?.gen3?.amount || 0,
+            mult: data?.gen3?.mult || 0.00188,
+            before: data?.gen3?.before || 0,
         };
-        if (player.gupgrade5.bought == false) {
-            document.getElementById("gupgrade5").innerHTML = `Earn 30 times more primary points <br> <br> Cost: <strong>1.00e7</strong> Primary Points.`;
-            document.getElementById("gupgrade6").style.display = "none";
-        } else {
-            document.getElementById("gupgrade5").innerHTML = `Earn 30 times more primary points <br> <br> Upgraded`;
-            document.getElementById("gupgrade5").style.backgroundColor = "lightgreen";
+
+        this.gupgrade1 = {
+            bought: data?.gupgrade1?.bought || false,
         };
-        if (player.gupgrade6.bought == false) {
-            document.getElementById("gupgrade6").innerHTML = `Primary points gain boost each other <br> Currently: 1.00x <br> Cost: <strong>2.00e6</strong> Primary Points.`;
-            document.getElementById("gupgrade7").style.display = "none";
-        } else {
-            document.getElementById("gupgrade6").innerHTML = `Primary points gain boost each other <br> Currently: ${notate(OmegaNum.log10(player.primary.amount).pow(1.5))}x<br> Upgraded`;
-            document.getElementById("gupgrade6").style.backgroundColor = "lightgreen";
+
+        this.gupgrade2 = {
+            bought: data?.gupgrade2?.bought || false,
         };
-        if (player.gupgrade7.bought == false) {
-            document.getElementById("gupgrade7").innerHTML = `4th upgrade becomes 50% stronger <br> Your upgrades and points don't reset on primary <br> Cost: <strong>1.00e8</strong> Primary Points.`;
-            document.getElementById("gupgrade8").style.display = "none";
-        } else {
-            document.getElementById("gupgrade7").innerHTML = `4th upgrade becomes 50% stronger <br> Your upgrades and points don't reset on primary <br> Upgraded`;
-            document.getElementById("gupgrade7").style.backgroundColor = "lightgreen";
+
+        this.gupgrade3 = {
+            bought: data?.gupgrade3?.bought || false,
         };
-        if (player.gupgrade8.bought == false) {
-            document.getElementById("gupgrade8").innerHTML = `You gain ^1.05 more points <br> <br> Cost: <strong>3.00e8</strong> Primary Points.`;
-            document.getElementById("gupgrade9").style.display = "none";
-        } else {
-            document.getElementById("gupgrade8").innerHTML = `You gain ^1.05 more points <br> <br> Upgraded`;
-            document.getElementById("gupgrade8").style.backgroundColor = "lightgreen";
+
+        this.gupgrade4 = {
+            bought: data?.gupgrade4?.bought || false,
         };
-        if (player.gupgrade9.bought == false) {
-            document.getElementById("gupgrade9").innerHTML = `3rd main upgrade becomes 50% stronger <br> <br> Cost: <strong>1.00e10</strong> Primary Points.`;
-            document.getElementById("gupgrade10").style.display = "none";
-        } else {
-            document.getElementById("gupgrade9").innerHTML = `3rd main upgrade becomes 50% stronger<br> <br> Upgraded`;
-            document.getElementById("gupgrade9").style.backgroundColor = "lightgreen";
+
+        this.gupgrade5 = {
+            bought: data?.gupgrade5?.bought || false,
         };
-        if (player.gupgrade10.bought == false) {
-            document.getElementById("gupgrade10").innerHTML = `Generator costs become cheaper based on your primary points <br> Currently: x<sup>1.000</sup> <br> Cost: <strong>1.00e11</strong> Primary Points.`;
-            document.getElementById("gupgrade11").style.display = "none";
-        } else {
-            document.getElementById("gupgrade10").innerHTML = `Generator costs become cheaper based on your primary points <br> Currently: x<sup>${OmegaNum.div(1, OmegaNum.pow(OmegaNum.log10(player.primary.amount), 0.2)).toFixed(3)}</sup> <br> Upgraded`;
-            document.getElementById("gupgrade10").style.backgroundColor = "lightgreen";
+
+        this.gupgrade6 = {
+            bought: data?.gupgrade6?.bought || false,
         };
-        if (player.gupgrade11.bought == false) {
-            if (player.challenge1.completed == true) {
-                document.getElementById("gupgrade11").innerHTML = `Increase sub-points effect on points amount <br> x<sup>1.2</sup> -> x<sup>1.6</sup> <br> Cost: <strong>3.00e11</strong> Primary Points.`;
-            } else {
-                document.getElementById("gupgrade11").innerHTML = `Increase sub-points effect on points amount <br> x<sup>0.75</sup> -> x<sup>1.6</sup> <br> Cost: <strong>3.00e11</strong> Primary Points.`;
-            };
-            document.getElementById("gupgrade12").style.display = "none";
-        } else {
-            if (player.challenge1.completed == true) {
-                document.getElementById("gupgrade11").innerHTML = `Increase sub-points effect on points amount <br> x<sup>1.2</sup> -> x<sup>1.6</sup> <br> Upgraded`;
-            } else {
-                document.getElementById("gupgrade11").innerHTML = `Increase sub-points effect on points amount <br> x<sup>0.6</sup> -> x<sup>1.6</sup> <br> Upgraded`;
-            };
-            document.getElementById("gupgrade11").style.backgroundColor = "lightgreen";
+
+        this.gupgrade7 = {
+            bought: data?.gupgrade7?.bought || false,
         };
-        if (player.gupgrade12.bought == false) {
-            document.getElementById("gupgrade12").innerHTML = `Earn more 3rd generators depending on your 3rd generator amount <br> Currently: 0.00/s <br> Cost: <strong>1.00e13</strong> Primary Points.`;
-            document.getElementById("gupgrade13").style.display = "none";
-        } else {
-            document.getElementById("gupgrade12").innerHTML = `Earn more 3rd generators depending on your 3rd generator amount <br> Currently: ${notate(OmegaNum.times(player.gen3.amount, OmegaNum.sub(OmegaNum.pow(OmegaNum.div(player.gen3.amount, player.gen3.before), 50), 1)))}/s <br> Upgraded`;
-            document.getElementById("gupgrade12").style.backgroundColor = "lightgreen";
+
+        this.gupgrade8 = {
+            bought: data?.gupgrade8?.bought || false,
         };
-        if (player.gupgrade13.bought == false) {
-            document.getElementById("gupgrade13").innerHTML = `Generators multiplier become stronger based on your points amount <br> Currently: x<sup>1.000</sup> <br> Cost: <strong>1.00e14</strong> Primary Points.`;
-            document.getElementById("gupgrade14").style.display = "none";
-        } else {
-            document.getElementById("gupgrade13").innerHTML = `Generators multiplier become stronger based on your points amount <br> Currently: x<sup>${OmegaNum.pow(1.1, OmegaNum.log10(OmegaNum.log10(player.money.amount))).toFixed(3)}</sup> <br> Upgraded`;
-            document.getElementById("gupgrade13").style.backgroundColor = "lightgreen";
+
+        this.gupgrade9 = {
+            bought: data?.gupgrade9?.bought || false,
         };
-        if (player.gupgrade14.bought == false) {
-            document.getElementById("gupgrade14").innerHTML = `You unlock 1 new main upgrade <br> <br> Cost: <strong>1.00e16</strong> Primary Points.`;
-            document.getElementById("gupgrade15").style.display = "none";
-        } else {
-            document.getElementById("gupgrade14").innerHTML = `You unlock 1 new main upgrade <br> <br> Upgraded`;
-            document.getElementById("gupgrade14").style.backgroundColor = "lightgreen";
+
+        this.gupgrade10 = {
+            bought: data?.gupgrade10?.bought || false,
         };
-        if (player.gupgrade15.bought == false) {
-            document.getElementById("gupgrade15").innerHTML = `You unlock 1 new main upgrade <br> <br> Cost: <strong>1.00e17</strong> Primary Points.`;
-            document.getElementById("gupgrade16").style.display = "none";
-        } else {
-            document.getElementById("gupgrade15").innerHTML = `You unlock 1 new main upgrade <br> <br> Upgraded`;
-            document.getElementById("gupgrade15").style.backgroundColor = "lightgreen";
+
+        this.gupgrade11 = {
+            bought: data?.gupgrade11?.bought || false,
         };
-        if (player.gupgrade16.bought == false) {
-            document.getElementById("gupgrade16").innerHTML = `3rd generator multiplier is increased by 1.00e13x <br> <br> Cost: <strong>1.00e25</strong> Primary Points.`;
-            document.getElementById("gupgrade17").style.display = "none";
-        } else {
-            document.getElementById("gupgrade16").innerHTML = `3rd generator multiplier is increased by 1.00e13x <br> <br> Upgraded`;
-            document.getElementById("gupgrade16").style.backgroundColor = "lightgreen";
+
+        this.gupgrade12 = {
+            bought: data?.gupgrade12?.bought || false,
         };
-        if (player.gupgrade17.bought == false) {
-            document.getElementById("gupgrade17").innerHTML = `You produce even more 3rd generators <br> <br> Cost: <strong>1.00e27</strong> Primary Points.`;
-            document.getElementById("gupgrade18").style.display = "none";
-        } else {
-            document.getElementById("gupgrade17").innerHTML = `You produce even more 3rd generators <br> <br> Upgraded`;
-            document.getElementById("gupgrade17").style.backgroundColor = "lightgreen";
+
+        this.gupgrade13 = {
+            bought: data?.gupgrade13?.bought || false,
         };
-        if (player.gupgrade18.bought == false) {
-            document.getElementById("gupgrade18").innerHTML = `2nd generator multiplier is increased by 1.00e24x <br> <br> Cost: <strong>1.00e30</strong> Primary Points.`;
-        } else {
-            document.getElementById("gupgrade18").innerHTML = `2nd generator multiplier is increased by 1.00e24x <br> <br> Upgraded`;
-            document.getElementById("gupgrade18").style.backgroundColor = "lightgreen";
+
+        this.gupgrade14 = {
+            bought: data?.gupgrade14?.bought || false,
         };
-    // BEFORE INFINITY
-    } else {
-        document.getElementById("primary").innerHTML = `You are <strong>${OmegaNum.div(OmegaNum.log10(OmegaNum.add(player.money.amount, 1)), 308.2537).times(100).toFixed(2)}%</strong> there.`;
-        document.getElementById("primaryadd").innerHTML = `Reach 1.8e308 points first`;
-        document.getElementById("gentotal").innerHTML = `Reach 1.8e308 points first`;
-        document.getElementById("generators").style.display = "none";
-        document.getElementById("gupgrades").style.display = "none";
-        document.getElementById("chal").style.display = "none";
-        document.getElementById("Challenges").style.display = "none";
+
+        this.upgrade5 = {
+            effect: data?.upgrade5?.effect || 1,
+            cost: data?.upgrade5?.cost || new OmegaNum("e1.5e3"),
+            level: data?.upgrade5?.level || 0,
+        };
+
+        this.gupgrade15 = {
+            bought: data?.gupgrade15?.bought || false,
+        };
+
+        this.upgrade6 = {
+            effect: data?.upgrade6?.effect || 1,
+            cost: data?.upgrade6?.cost || new OmegaNum("ee3"),
+            level: data?.upgrade6?.level || 0,
+        };
+
+        this.gupgrade16 = {
+            bought: data?.gupgrade16?.bought || false,
+        };
+
+        this.gupgrade17 = {
+            bought: data?.gupgrade17?.bought || false,
+        };
+
+        this.gupgrade18 = {
+            bought: data?.gupgrade18?.bought || false,
+        };
+
+        this.challenge = {
+            active: data?.challenge?.active || false,
+        };
+
+        this.challenge1 = {
+            active: data?.challenge1?.active || false,
+            completed: data?.challenge1?.completed || false,
+            time: data?.challenge1?.time || 120,
+        };
+
+        this.challenge2 = {
+            active: data?.challenge2?.active || false,
+            completed: data?.challenge2?.completed || false,
+            time: data?.challenge2?.time || 90,
+        };
+
+        this.challenge3 = {
+            active: data?.challenge3?.active || false,
+            completed: data?.challenge3?.completed || false,
+            time: data?.challenge3?.time || 100,
+        };
+
+        this.challenge4 = {
+            active: data?.challenge4?.active || false,
+            completed: data?.challenge4?.completed || false,
+            time: data?.challenge4?.time || 30,
+        };
+
+        this.challenge5 = {
+            active: data?.challenge5?.active || false,
+            completed: data?.challenge5?.completed || false,
+            time: data?.challenge5?.time || 60,
+        };
+
+        this.challenge6 = {
+            active: data?.challenge6?.active || false,
+            completed: data?.challenge6?.completed || false,
+            time: data?.challenge6?.time || 1000,
+        };
     };
-    if (player.gupgrade14.bought == true) {
-        document.getElementById("upgrade5").style.display = "inline-block";
-        document.getElementById("upgrade5").innerHTML = `Every upgrade (expect this one) and all generators become cheaper <br> Currently: x<sup>${notate(player.upgrade5.effect)}</sup> <br> Cost: <strong>${notate(player.upgrade5.cost)}</strong> points.`
+};
+
+var player = new Player();
+
+window.setInterval (function() {
+    player.gen1.before = player.gen1.total;
+    player.gen2.before = player.gen2.total;
+    player.money.amount = OmegaNum.add(player.money.amount, OmegaNum.div(player.money.second, 50));
+    // translate sub-points to points receivement
+    if (player.challenge1.active == false) {
+        if (player.challenge5.active == false) {
+            if (player.gupgrade11.bought == false) {
+                if (player.challenge1.completed == true) {
+                    if (player.challenge5.completed == true) {
+                        if (player.challenge6.active == false) {
+                            player.money.translate = OmegaNum.pow(OmegaNum.add(player.gen1.boost, 1), 0.75);
+                        } else {
+                            player.money.translate = OmegaNum.pow(1.02, OmegaNum.log(player.gen1.boost));
+                        };
+                    } else {
+                        player.money.translate = OmegaNum.pow(OmegaNum.add(player.gen1.boost, 1), 0.4);
+                    };
+                } else {
+                    player.money.translate = OmegaNum.pow(OmegaNum.add(player.gen1.boost, 1), 0.25);
+                };
+            } else {
+                player.money.translate = OmegaNum.pow(player.gen1.boost, 1.6);
+            };
+        } else {
+            player.money.translate = OmegaNum.pow(OmegaNum.add(player.gen1.boost, 1), 0.125);
+        };
     } else {
-        document.getElementById("upgrade5").style.display = "none";
+        player.money.translate = OmegaNum.pow(OmegaNum.add(player.gen1.boost, 1), 0.125);
     };
-    if (player.gupgrade15.bought == true) {
-        document.getElementById("upgrade6").style.display = "inline-block";
-        document.getElementById("upgrade6").innerHTML = `You earn twice as many primary points as you earn now <br> Currently: x${notate2(OmegaNum.pow(2, player.upgrade6.level))} <br> Cost: <strong>${notate(player.upgrade6.cost)}</strong> points.`
-    } else {
-        document.getElementById("upgrade6").style.display = "none";
+    // auto money //
+
+    if (OmegaNum.cmp(player.auto.requires, 1e105) < 0) {
+        if ((player.challenge2.active == true) || player.challenge5.active == true) {
+            player.auto.effect = OmegaNum.pow(OmegaNum.sqrt(3), player.upgrade4.effect);
+        } else if (player.challenge4.active == true) {
+            player.auto.effect = OmegaNum.pow(27, player.upgrade4.effect);
+        } else {
+            player.auto.effect = OmegaNum.pow(3, player.upgrade4.effect);
+        };
+    } else if ((OmegaNum.cmp(player.auto.requires, 1e105) >= 0) && (OmegaNum.cmp(player.auto.requires, 1e202) <= 0)) {
+        if ((player.challenge2.active == true) || player.challenge5.active == true) {
+            player.auto.effect = OmegaNum.pow(OmegaNum.sqrt(27), player.upgrade4.effect);
+        } else if (player.challenge4.active == true) {
+            player.auto.effect = OmegaNum.pow(19683, player.upgrade4.effect);
+        } else {
+            player.auto.effect = OmegaNum.pow(27, player.upgrade4.effect);
+        }
+    } else if ((OmegaNum.cmp(player.auto.requires, 1e202) >= 0) && (OmegaNum.cmp(player.auto.requires, new OmegaNum("e530")) <= 0)) {
+        if ((player.challenge2.active == true) || player.challenge5.active == true) {
+            player.auto.effect = OmegaNum.pow(OmegaNum.sqrt(1000), player.upgrade4.effect);
+        } else if (player.challenge4.active == true) {
+            player.auto.effect = OmegaNum.pow(1e9, player.upgrade4.effect);
+        } else {
+            player.auto.effect = OmegaNum.pow(1000, player.upgrade4.effect);
+        };
+    } else if ((OmegaNum.cmp(player.auto.requires, new OmegaNum("1e530")) >= 0) && (OmegaNum.cmp(player.auto.requires, new OmegaNum("1e1300")) < 0)) {
+        if ((player.challenge2.active == true) || player.challenge5.active == true) {
+            player.auto.effect = OmegaNum.pow(OmegaNum.sqrt(30), player.upgrade4.effect);
+        } else if (player.challenge4.active == true) {
+            player.auto.effect = OmegaNum.pow(27000, player.upgrade4.effect);
+        } else {
+            player.auto.effect = OmegaNum.pow(30, player.upgrade4.effect);
+        };
+    } else if (OmegaNum.cmp(player.auto.requires, new OmegaNum("1e1300")) >= 0) {
+        if ((player.challenge2.active == true) || player.challenge5.active == true) {
+            player.auto.effect = OmegaNum.pow(OmegaNum.sqrt(3), player.upgrade4.effect);
+        } else if (player.challenge4.active == true) {
+            player.auto.effect = OmegaNum.pow(27, player.upgrade4.effect);
+        } else {
+            player.auto.effect = OmegaNum.pow(3, player.upgrade4.effect);
+        };
     };
 
-    if (player.challenge1.completed == false) {
-        document.getElementById("chal1").innerHTML = `Challenge 1 <br> <br> Sub-points effect is powered by x<sup>0.125</sup> <br> Goal: 1.00e21 in ${notate(player.challenge1.time)} seconds`;
-        document.getElementById("chal2").style.display = `none`;
-        if (player.challenge1.active == false) {
-            document.getElementById("chal1").style.backgroundColor = "lightgrey";
-        } else {
-            document.getElementById("chal1").style.backgroundColor = "orange";
+
+    if (OmegaNum.cmp(player.money.amount, player.auto.requires) >= 0) {
+        player.auto.level = OmegaNum.add(player.auto.level, 1);
+        if (OmegaNum.cmp(player.auto.requires, 1e105) < 0) {
+            player.auto.requires = OmegaNum.times(player.auto.requires, 1000);
+        } else if ((OmegaNum.cmp(player.auto.requires, 1e105) >= 0) && (OmegaNum.cmp(player.auto.requires, 1e202) <= 0)) {
+            player.auto.requires = OmegaNum.times(player.auto.requires, 1e9);
+        } else if ((OmegaNum.cmp(player.auto.requires, 1e202) >= 0) && (OmegaNum.cmp(player.auto.requires, new OmegaNum("1e530")) < 0)) {
+            player.auto.requires = OmegaNum.times(player.auto.requires, 1e11);
+        } else if ((OmegaNum.cmp(player.auto.requires, new OmegaNum("1e530")) >= 0) && (OmegaNum.cmp(player.auto.requires, new OmegaNum("1e1300")) < 0)) {
+            player.auto.requires = OmegaNum.times(player.auto.requires, 1e9);
+        } else if (OmegaNum.cmp(player.auto.requires, new OmegaNum("1e1300")) >= 0) {
+            player.auto.effect = OmegaNum.pow(3, player.upgrade4.effect);
         };
-    } else {
-        document.getElementById("chal1").innerHTML = `Challenge 1 <br> <br> Sub-points effect is powered by x<sup>0.125</sup> <br> Reward: Sub-points translation improved to x<sup>0.4</sup>`;
-        document.getElementById("chal1").style.backgroundColor = "lightgreen";
-        document.getElementById("chal2").style.display = `inline-block`;
+        player.money.base = OmegaNum.times(player.auto.effect, player.money.base);
     };
-    if (player.challenge2.completed == false) {
-        document.getElementById("chal2").innerHTML = `Challenge 2 <br> <br> Automatic points earning becomes weakened <br> Goal: 1.00e60 in ${notate(player.challenge2.time)} seconds`;
-        document.getElementById("chal3").style.display = `none`;
-        if (player.challenge2.active == false) {
-            document.getElementById("chal2").style.backgroundColor = "lightgrey";
-        } else {
-            document.getElementById("chal2").style.backgroundColor = "orange";
-        };
-    } else {
-        document.getElementById("chal2").innerHTML = `Challenge 2 <br> <br> Automatic points earning becomes weakened <br> Reward: Second upgrade's cost is reduced by x<sup>0.9</sup>.`;
-        document.getElementById("chal2").style.backgroundColor = "lightgreen";
-        document.getElementById("chal3").style.display = `inline-block`;
-    };
-    if (player.challenge3.completed == false) {
-        document.getElementById("chal3").innerHTML = `Challenge 3 <br> <br> 3<sup>rd</sup> upgrade does nothing <br> Goal: 1.00e160 in ${notate(player.challenge3.time)} seconds`;
-        document.getElementById("chal4").style.display = `none`;
+    if (player.gupgrade9.bought == false) {
         if (player.challenge3.active == false) {
-            document.getElementById("chal3").style.backgroundColor = "lightgrey";
+            player.upgrade3.effect = OmegaNum.pow(0.96, player.upgrade3.level);
         } else {
-            document.getElementById("chal3").style.backgroundColor = "orange";
+            player.upgrade3.effect = OmegaNum.pow(1, player.upgrade3.level);
         };
     } else {
-        document.getElementById("chal3").innerHTML = `Challenge 3 <br> <br> 3<sup>rd</sup> upgrade does nothing <br> Reward: Universes effect to money becomes bigger.`;
-        document.getElementById("chal3").style.backgroundColor = "lightgreen";
-        document.getElementById("chal4").style.display = `inline-block`;
-    };
-    if (player.challenge4.completed == false) {
-        document.getElementById("chal4").innerHTML = `Challenge 4 <br> <br> 1<sup>st</sup> upgrade does nothing. <br> Automatic points earning becomes stronger. <br> Goal: 1.00e19 in ${notate(player.challenge4.time)} seconds`;
-        document.getElementById("chal5").style.display = `none`;
-        if (player.challenge4.active == false) {
-            document.getElementById("chal4").style.backgroundColor = "lightgrey";
+        if (player.challenge3.active == false) {
+            player.upgrade3.effect = OmegaNum.pow(0.94, player.upgrade3.level);
         } else {
-            document.getElementById("chal4").style.backgroundColor = "orange";
+            player.upgrade3.effect = OmegaNum.pow(1, player.upgrade3.level);
+        };
+    };
+    // generators
+    player.gen1.boost = OmegaNum.add(player.gen1.boost, OmegaNum.times(player.gen1.total, OmegaNum.div(player.gen1.mult, 50)));
+    if ((player.gupgrade4.bought == true) && (player.gupgrade13.bought == false)) {
+        player.gen1.mult = OmegaNum.pow(9, OmegaNum.sub(player.gen1.level, 1));
+        player.gen2.mult = OmegaNum.pow(7, OmegaNum.sub(player.gen2.level, 1));
+        player.gen3.mult = OmegaNum.pow(5, OmegaNum.sub(player.gen3.level, 1));
+    } else if ((player.gupgrade4.bought == true) && (player.gupgrade13.bought == true))  {
+        player.gen1.mult = OmegaNum.pow(OmegaNum.pow(9, OmegaNum.pow(1.1, OmegaNum.log10(OmegaNum.log10(player.money.amount)))), OmegaNum.sub(player.gen1.level, 1));
+        if (player.gupgrade18.bought == true) {
+            player.gen2.mult = OmegaNum.pow(OmegaNum.pow(7, OmegaNum.pow(1.1, OmegaNum.log10(OmegaNum.log10(player.money.amount)))), OmegaNum.sub(player.gen2.level, 1)).times(1e24);
+        } else {
+            player.gen2.mult = OmegaNum.pow(OmegaNum.pow(7, OmegaNum.pow(1.1, OmegaNum.log10(OmegaNum.log10(player.money.amount)))), OmegaNum.sub(player.gen2.level, 1));
+        };
+        if (player.gupgrade16.bought == true) {
+            player.gen3.mult = OmegaNum.pow(OmegaNum.pow(5, OmegaNum.pow(1.1, OmegaNum.log10(OmegaNum.log10(player.money.amount)))), OmegaNum.sub(player.gen3.level, 1)).times(1e13);
+        } else {
+            player.gen3.mult = OmegaNum.pow(OmegaNum.pow(5, OmegaNum.pow(1.1, OmegaNum.log10(OmegaNum.log10(player.money.amount)))), OmegaNum.sub(player.gen3.level, 1));
         };
     } else {
-        document.getElementById("chal4").innerHTML = `Challenge 4 <br> <br> 1<sup>st</sup> upgrade does nothing. <br> Automatic points earning becomes stronger. <br> Reward: You gain 15 times more prestige points.`;
-        document.getElementById("chal4").style.backgroundColor = "lightgreen";
-        document.getElementById("chal5").style.display = `inline-block`;
+        player.gen1.mult = OmegaNum.pow(4, OmegaNum.sub(player.gen1.level, 1));
+        player.gen2.mult = OmegaNum.pow(3.2, OmegaNum.sub(player.gen2.level, 1));
+        player.gen3.mult = OmegaNum.pow(2.7, OmegaNum.sub(player.gen3.level, 1));
     };
-    if (player.challenge5.completed == false) {
-        document.getElementById("chal5").innerHTML = `Challenge 5 <br> <br> Challenges 1 and 2 are combined <br> Goal: 1.00e63 in ${notate(player.challenge5.time)} seconds`;
-        document.getElementById("chal6").style.display = `none`;
-        if (player.challenge5.active == false) {
-            document.getElementById("chal5").style.backgroundColor = "lightgrey";
-        } else {
-            document.getElementById("chal5").style.backgroundColor = "orange";
-        };
+    player.gen1.total = OmegaNum.add(player.gen1.total, OmegaNum.times(player.gen2.total, OmegaNum.div(player.gen2.mult, 50)));
+    player.gen2.total = OmegaNum.add(player.gen2.total, OmegaNum.times(player.gen3.amount, OmegaNum.div(player.gen3.mult, 50)));
+    // generator boost to points
+    if (OmegaNum.cmp(player.money.translate, 0) <= 0) {
+        player.money.second = OmegaNum.times(player.money.base, OmegaNum.add(player.money.translate, 1));
     } else {
-        document.getElementById("chal5").innerHTML = `Challenge 5 <br> <br> Challenges 1 and 2 are combined <br> Reward: Sub-points translation improved to x<sup>0.75</sup>`;
-        document.getElementById("chal5").style.backgroundColor = "lightgreen";
-        document.getElementById("chal6").style.display = `inline-block`;
+        player.money.second = OmegaNum.times(player.money.base, player.money.translate);
     };
-    if (player.challenge6.completed == false) {
-        document.getElementById("chal6").innerHTML = `Challenge 6 <br> <br> Universes boost only 2x to money. 4th upgrade is disabled. Sub-points effect becomes worse. <br> Goal: 1.00e162 in ${player.challenge6.time.toFixed(1)} seconds`;
+    // automatically earns primary points
+    if (player.gupgrade3.bought == true) {
+        player.primary.amount = OmegaNum.add(player.primary.amount, OmegaNum.div(player.primary.earn, 50));
+    };
+    if (isNaN(player.upgrade1.level)) {
+        player.upgrade1.level = player.upgrade1.level.array[0];
+    };
+    if (isNaN(player.upgrade2.level)) {
+        player.upgrade2.level = player.upgrade2.level.array[0];
+    };
+    if (isNaN(player.upgrade4.level)) {
+        player.upgrade4.level = player.upgrade4.level.array[0];
+    };
+    player.upgrade5.cost = OmegaNum.pow(1e5, player.upgrade5.level).times(new OmegaNum("1e1500"));
+    player.upgrade5.effect = OmegaNum.pow(0.9975062, player.upgrade5.level);
+    if ((OmegaNum.cmp(player.upgrade5.cost, new OmegaNum("1e2000")) < 0)) {
+        player.upgrade5.cost = OmegaNum.pow(1e5, player.upgrade5.level).times(new OmegaNum("1e1500"));
+    } else if ((OmegaNum.cmp(player.upgrade5.cost, new OmegaNum("1e2000")) >= 0)) {
+        player.upgrade5.cost = OmegaNum.pow(10, OmegaNum.round(OmegaNum.times(2000, OmegaNum.pow(1.005, OmegaNum.sub(player.upgrade5.level, 100)))));
+    };
+    // challenge 1
+    if (player.challenge1.active == true) {
+        player.challenge1.time = OmegaNum.sub(player.challenge1.time, 0.02);
+        if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e21")) >= 0) {
+            player.challenge1.active = false;
+            player.challenge1.completed = true;
+            player.challenge.active = false;
+            upgrade2();
+        };
+        if (player.challenge1.time <= 0) {
+            challenge1enter();
+        };
+    };
+    // challenge 2
+    if (player.challenge2.active == true) {
+        player.challenge2.time = OmegaNum.sub(player.challenge2.time, 0.02);
+        if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e60")) >= 0) {
+            player.challenge2.active = false;
+            player.challenge2.completed = true;
+            player.challenge.active = false;
+            upgrade2();
+        };
+        if (player.challenge2.time <= 0) {
+            challenge2enter();
+            resetuniverses();
+        };
+    };
+    // challenge 3
+    if (player.challenge3.active == true) {
+        player.challenge3.time = OmegaNum.sub(player.challenge3.time, 0.02);
+        if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e160")) >= 0) {
+            player.challenge3.active = false;
+            player.challenge3.completed = true;
+            player.challenge.active = false;
+            upgrade2();
+        };
+        if (player.challenge3.time <= 0) {
+            challenge3enter();
+            resetuniverses();
+        };
+    };
+
+    if (player.challenge3.completed == true) {
         if (player.challenge6.active == false) {
-            document.getElementById("chal6").style.backgroundColor = "lightgrey";
+            player.universes.effect = 100;
         } else {
-            document.getElementById("chal6").style.backgroundColor = "orange";
+            player.universes.effect = 2;
         };
     } else {
-        document.getElementById("chal6").innerHTML = `Challenge 6 <br> <br> Universes boost only 2x to money. 4th upgrade is disabled. Sub-points translation is disabled. <br> Reward: Decrease universe cost scailing.`;
-        document.getElementById("chal6").style.backgroundColor = "lightgreen";
+        player.universes.effect = 5;
     };
-}, 0);
+
+    // challenge 4
+    if (player.challenge4.active == true) {
+        player.challenge4.time = OmegaNum.sub(player.challenge4.time, 0.02);
+        if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e19")) >= 0) {
+            player.challenge4.active = false;
+            player.challenge4.completed = true;
+            player.challenge.active = false;
+            upgrade2();
+        };
+        if (player.challenge4.time <= 0) {
+            challenge4enter();
+            resetuniverses();
+        };
+    };
+
+    // challenge 5
+    if (player.challenge5.active == true) {
+        player.challenge5.time = OmegaNum.sub(player.challenge5.time, 0.02);
+        if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e63")) >= 0) {
+            player.challenge5.active = false;
+            player.challenge5.completed = true;
+            player.challenge.active = false;
+            upgrade2();
+        };
+        if (player.challenge5.time <= 0) {
+            challenge5enter();
+            resetuniverses();
+        };
+    };
+
+    // challenge 6
+    if (player.challenge6.active == true) {
+        player.challenge6.time = OmegaNum.sub(player.challenge6.time, 0.02);
+        if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e162")) >= 0) {
+            player.challenge6.active = false;
+            player.challenge6.completed = true;
+            player.challenge.active = false;
+            upgrade2();
+        };
+        if (player.challenge6.time <= 0) {
+            challenge6enter();
+            resetuniverses();
+        };
+    };
+
+    if (player.challenge.active == false) {
+        if (OmegaNum.cmp(player.money.second, player.money.max) >= 0) {
+            player.money.max = player.money.second;
+            player.money.maxbase = player.money.base;
+        } else if (OmegaNum.cmp(player.money.second, player.money.max) < 0) {
+            player.money.second = player.money.max;
+            player.money.base = player.money.maxbase;
+        };
+    };
+}, 20);
+
+player.money.maxbase = 1;
+player.money.max = 1;
+player.money.second = 1;
+player.money.base = 1;
+
+function upgrade1() {
+    while (OmegaNum.cmp(player.money.amount, player.upgrade1.cost) >= 0) {
+        player.upgrade1.level = OmegaNum.add(player.upgrade1.level, 1);
+        player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade1.cost);
+        player.money.second = OmegaNum.times(player.money.second, player.upgrade1.effect);
+        player.money.base = OmegaNum.times(player.money.base, player.upgrade1.effect);
+        if (player.challenge4.active == false) {
+            if (player.upgrade1.level >= 90) {
+                player.upgrade1.effect = OmegaNum.pow(1.00275, OmegaNum.sub(player.upgrade1.level, 1));
+            } else {
+                player.upgrade1.effect = OmegaNum.sub(2, OmegaNum.times(0.01, player.upgrade1.level));
+            };
+            if (player.upgrade1.level >= 200) {
+                if (OmegaNum.cmp(player.upgrade1.cost, 1e308) >= 0) {
+                    if (player.gupgrade2.bought == true) {
+                        player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 1.01);
+                    } else {
+                        player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 1.04);
+                    };
+                } else {
+                    player.upgrade1.cost = OmegaNum.times(player.upgrade1.cost, OmegaNum.pow(player.upgrade1.effect, OmegaNum.add(1.25, OmegaNum.mul(player.upgrade2.level, 0.03))));
+                }
+            } else {
+                player.upgrade1.cost = OmegaNum.times(player.upgrade1.cost, OmegaNum.pow(player.upgrade1.effect, 1.25));
+            };
+        } else {
+            player.upgrade1.effect = 1;
+            player.upgrade1.cost = Infinity;
+        };
+    };
+};
+
+function upgrade2() {
+    while (OmegaNum.cmp(player.money.amount, player.upgrade2.cost) >= 0) {
+        player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade2.cost);
+        player.money.second = OmegaNum.times(player.money.second, player.upgrade2.effect);
+        if (OmegaNum.cmp(player.upgrade2.effect, 10) < 0) {
+            player.upgrade2.effect = OmegaNum.add(player.upgrade2.effect, 1);
+            if (player.challenge2.completed == false) {
+                player.upgrade2.cost = OmegaNum.times(player.upgrade2.cost, OmegaNum.pow(10, Math.round(OmegaNum.pow(player.upgrade2.effect, 1.5))));
+            } else {
+                player.upgrade2.cost = OmegaNum.times(player.upgrade2.cost, OmegaNum.pow(10, Math.round(OmegaNum.pow(player.upgrade2.effect, 1.5)))).pow(0.9);
+            };
+        } else {
+            player.upgrade2.effect = OmegaNum.pow(10, OmegaNum.pow(1.05, OmegaNum.sub(player.upgrade2.level, 5)));
+            if (OmegaNum.cmp(player.upgrade2.cost, 1e308) < 0) {
+                player.upgrade2.cost = OmegaNum.pow(player.upgrade2.cost, 1.15);
+            } else {
+                if (player.gupgrade2.bought == true) {
+                    if (player.challenge2.completed == false) {
+                        player.upgrade2.cost = OmegaNum.pow(player.upgrade2.cost, 1.07);
+                    } else {
+                        player.upgrade2.cost = OmegaNum.pow(player.upgrade2.cost, 1.055);
+                    };
+                } else {
+                    if (player.challenge2.completed == false) {
+                        player.upgrade2.cost = OmegaNum.pow(player.upgrade2.cost, 1.25);
+                    } else {
+                        player.upgrade2.cost = OmegaNum.pow(player.upgrade2.cost, 1.22);
+                    };
+                };
+            };
+        };
+        player.upgrade2.level = OmegaNum.add(player.upgrade2.level, 1);
+        player.money.base = OmegaNum.times(player.money.base, player.upgrade2.effect);
+    };
+};
+
+function upgrade3() {
+    while (OmegaNum.cmp(player.money.amount, player.upgrade3.cost) >= 0) {
+        player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade3.cost);
+        if (OmegaNum.cmp(player.upgrade3.cost, 1e308) >= 0) {
+            if (player.gupgrade2.bought == true) {
+                player.upgrade3.cost = OmegaNum.pow(10, Math.floor(OmegaNum.log10(OmegaNum.pow(player.upgrade3.cost, 1.15))));
+            } else {
+                player.upgrade3.cost = OmegaNum.pow(10, Math.floor(OmegaNum.log10(OmegaNum.pow(player.upgrade3.cost, 1.375))));
+            };
+        } else {
+            player.upgrade3.cost = OmegaNum.pow(10, Math.floor(OmegaNum.log10(OmegaNum.pow(player.upgrade3.cost, 1.5))));
+        };
+        if (player.gupgrade9.bought == false) {
+            if (player.challenge3.active == false) {
+                player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 0.96);
+            } else {
+                player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 1);
+            }
+        } else {
+            if (player.challenge3.active == false) {
+                player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 0.94);
+            } else {
+                player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 1);
+            }
+        };
+        player.upgrade3.level += 1;
+    };
+};
+
+function upgrade4() {
+    while (OmegaNum.cmp(player.money.amount, player.upgrade4.cost) >= 0) {
+        player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade4.cost);
+        if (player.gupgrade2.bought == true) {
+            player.upgrade4.cost = OmegaNum.pow(player.upgrade4.cost, 1.1);
+        } else {
+            player.upgrade4.cost = OmegaNum.pow(player.upgrade4.cost, 1.15);
+        };
+        player.upgrade4.level = OmegaNum.add(player.upgrade4.level, 1);
+        if (player.challenge6.active == false) {
+            player.upgrade4.effect = OmegaNum.add(player.upgrade4.effect, 0.02);
+        } else {
+            player.upgrade4.effect = 1;
+        };
+    };
+};
+
+function universes() {
+    if (OmegaNum.cmp(player.money.amount, player.universes.requires) >= 0) {
+        resetuniverses();
+        player.universes.amount = OmegaNum.add(player.universes.amount, 1);
+        player.money.base = OmegaNum.pow(player.universes.effect, player.universes.amount);
+        if (OmegaNum.cmp(player.universes.amount, 4) <= 0) {
+            player.universes.requires = OmegaNum.pow(player.universes.requires, 1.25);
+        } else {
+            player.universes.requires = OmegaNum.pow(player.universes.requires, 1.14);
+        };
+    };
+};
+
+function upgrade5() {
+    if (player.gupgrade14.bought == true) {
+        if (OmegaNum.cmp(player.money.amount, player.upgrade5.cost) >= 0) {
+            player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade5.cost);
+            if ((OmegaNum.cmp(player.upgrade5.cost, new OmegaNum("1e2000")) < 0)) {
+                player.upgrade5.cost = OmegaNum.pow(1e5, player.upgrade5.level).times(new OmegaNum("1e1500"));
+            } else if ((OmegaNum.cmp(player.upgrade5.cost, new OmegaNum("1e2010")) < 0)) {
+                player.upgrade5.cost = OmegaNum.pow(10, OmegaNum.round(OmegaNum.times(2000, OmegaNum.pow(1.005, OmegaNum.sub(player.upgrade5.level, 100)))));
+            };
+            player.upgrade5.effect = OmegaNum.div(player.upgrade5.effect, 1.0025);
+            player.upgrade5.level = OmegaNum.add(player.upgrade5.level, 1);
+            player.upgrade1.cost = OmegaNum.pow(player.upgrade1.cost, 0.99750623);
+            player.upgrade2.cost = OmegaNum.pow(player.upgrade2.cost, 0.99750623);
+            player.upgrade3.cost = OmegaNum.pow(player.upgrade3.cost, 0.99750623);
+            player.upgrade4.cost = OmegaNum.pow(player.upgrade4.cost, 0.99750623);
+            player.gen1.costupdate = OmegaNum.pow(player.gen1.cost, 0.99750623);
+            player.gen2.costupdate = OmegaNum.pow(player.gen2.cost, 0.99750623);
+            player.gen3.costupdate = OmegaNum.pow(player.gen3.cost, 0.99750623);
+            player.gen1.costupdate = OmegaNum.pow(player.gen1.costupdate, OmegaNum.div(1, OmegaNum.div(1, OmegaNum.pow(OmegaNum.log10(player.primary.amount), 0.2))));
+            player.gen2.costupdate = OmegaNum.pow(player.gen2.costupdate, OmegaNum.div(1, OmegaNum.div(1, OmegaNum.pow(OmegaNum.log10(player.primary.amount), 0.2))));
+            player.gen3.costupdate = OmegaNum.pow(player.gen3.costupdate, OmegaNum.div(1, OmegaNum.div(1, OmegaNum.pow(OmegaNum.log10(player.primary.amount), 0.2))));
+        };
+    };
+};
+
+function upgrade6() {
+    if (player.gupgrade15.bought == true) {
+        if (OmegaNum.cmp(player.money.amount, player.upgrade6.cost) >= 0) {
+            player.money.amount = OmegaNum.sub(player.money.amount, player.upgrade6.cost);
+            player.upgrade6.cost = OmegaNum.pow(1e75, player.upgrade6.level).times(new OmegaNum("1e1000"));
+            player.upgrade6.effect = OmegaNum.times(player.upgrade6.effect, 2);
+            player.upgrade6.level = OmegaNum.add(player.upgrade6.level, 1);
+        };
+    };
+};
+
+function challenge1enter() {
+    if (player.challenge1.completed == false) {
+        if (player.challenge1.active == false) {
+            player.challenge1.active = true;
+            player.challenge.active = true;
+            resetprimary();
+        } else if (player.challenge1.active == true) {
+            player.challenge1.active = false;
+            player.challenge1.time = 120;
+            player.challenge.active = false;
+            resetprimary();
+        };
+    } else {
+        alert("Challenge 1 is already completed!");
+    };
+};
+
+function challenge2enter() {
+    if (player.challenge2.completed == false) {
+        if (player.challenge2.active == false) {
+            player.challenge2.active = true;
+            player.challenge.active = true;
+            resetprimary();
+        } else if (player.challenge2.active == true) {
+            player.challenge2.active = false;
+            player.challenge2.time = 90;
+            player.challenge.active = false;
+            resetprimary();
+        };
+    } else {
+        alert("Challenge 2 is already completed!");
+    };
+};
+
+function challenge3enter() {
+    if (player.challenge3.completed == false) {
+        if (player.challenge3.active == false) {
+            player.challenge3.active = true;
+            player.challenge.active = true;
+            resetprimary();
+        } else if (player.challenge3.active == true) {
+            player.challenge3.active = false;
+            player.challenge3.time = 100;
+            player.challenge.active = false;
+            resetprimary();
+        };
+    } else {
+        alert("Challenge 3 is already completed!");
+    };
+};
+
+function challenge4enter() {
+    if (player.challenge4.completed == false) {
+        if (player.challenge4.active == false) {
+            player.challenge4.active = true;
+            player.challenge.active = true;
+            resetprimary();
+        } else if (player.challenge4.active == true) {
+            player.challenge4.active = false;
+            player.challenge4.time = 30;
+            player.challenge.active = false;
+            resetprimary();
+        };
+    } else {
+        alert("Challenge 4 is already completed!");
+    };
+};
+
+function challenge5enter() {
+    if (player.challenge5.completed == false) {
+        if (player.challenge5.active == false) {
+            player.challenge5.active = true;
+            player.challenge.active = true;
+            resetprimary();
+        } else if (player.challenge5.active == true) {
+            player.challenge5.active = false;
+            player.challenge5.time = 60;
+            player.challenge.active = false;
+            resetprimary();
+        };
+    } else {
+        alert("Challenge 5 is already completed!");
+    };
+};
+
+function challenge6enter() {
+    if (player.challenge6.completed == false) {
+        if (player.challenge6.active == false) {
+            player.challenge6.active = true;
+            player.challenge.active = true;
+            resetprimary();
+        } else if (player.challenge6.active == true) {
+            player.challenge6.active = false;
+            player.challenge6.time = 1000;
+            player.challenge.active = false;
+            resetprimary();
+        };
+    } else {
+        alert("Challenge 6 is already completed!");
+    };
+};
+
+function reset() {
+    player.money.maxbase = 1;
+    player.money.max = 1;
+    player.money.second = 1;
+    player.money.base = 1;
+    player.money.amount = 0;
+    player.upgrade1.cost = 10;
+    player.upgrade1.effect = 2;
+    player.upgrade1.level = 0;
+    player.auto.requires = 1000;
+    player.auto.effect = 3;
+    player.auto.level = 0;
+    player.upgrade2.level = 0;
+    player.upgrade2.cost = 1e15;
+    player.upgrade2.effect = 4;
+    player.upgrade3.cost = 1e79;
+    player.upgrade3.effect = 1;
+    player.upgrade3.level = 0;
+    player.upgrade4.cost = 1e113;
+    player.upgrade4.effect = 1;
+    player.upgrade4.level = 0;
+    player.universes.amount = 0;
+    player.universes.effect = 4;
+    player.universes.requires = 1e60;
+    player.primary.amount = 0;
+    player.primary.reset = 0;
+    player.gen1.cost = 1;
+    player.gen1.costupdate = 1;
+    player.gen1.level = 0;
+    player.gen1.mult = 0.001;
+    player.gen1.boost = 0;
+    player.gen1.total = 0;
+    player.gen2.cost = 2;
+    player.gen2.costupdate = 2;
+    player.gen2.level = 0;
+    player.gen2.mult = 0.00137;
+    player.gen2.total = 0;
+    player.gen3.cost = 100;
+    player.gen3.costupdate = 100;
+    player.gen3.level = 0;
+    player.gen3.mult = 0.00188;
+    player.gupgrade1.bought = false;
+    player.gupgrade2.bought = false;
+    player.gupgrade3.bought = false;
+    player.gupgrade4.bought = false;
+    player.gupgrade5.bought = false;
+    player.gupgrade6.bought = false;
+    player.gupgrade7.bought = false;
+    player.gupgrade8.bought = false;
+    player.gupgrade9.bought = false;
+    player.gupgrade10.bought = false;
+    player.gupgrade11.bought = false;
+    player.gupgrade12.bought = false;
+    player.gupgrade13.bought = false;
+    player.gupgrade14.bought = false;
+    player.gupgrade15.bought = false;
+    player.gupgrade16.bought = false;
+    player.gupgrade17.bought = false;
+    player.gupgrade18.bought = false;
+    player.upgrade5.effect = 1;
+    player.upgrade5.cost = new OmegaNum("e1.5e3");
+    player.upgrade5.level = 0;
+    player.upgrade6.effect = 1;
+    player.upgrade6.cost = new OmegaNum("ee3");
+    player.upgrade6.level = 0;
+    player.challenge.active = false;
+    player.challenge1.active = false;
+    player.challenge1.completed = false;
+    player.challenge1.time = 120;
+    player.challenge2.active = false;
+    player.challenge2.completed = false;
+    player.challenge2.time = 90;
+    player.challenge3.active = false;
+    player.challenge3.completed = false;
+    player.challenge3.time = 100;
+    player.challenge4.active = false;
+    player.challenge4.completed = false;
+    player.challenge4.time = 30;
+    player.challenge5.active = false;
+    player.challenge5.completed = false;
+    player.challenge5.time = 60;
+    player.challenge6.active = false;
+    player.challenge6.completed = false;
+    player.challenge6.time = false;
+};
