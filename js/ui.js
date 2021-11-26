@@ -207,17 +207,18 @@ window.setInterval(function() {
         document.getElementById("Challenges").style.display = "none";
     };
     if (player.gupgrade14.bought == true) {
-        document.getElementById("upgrade5").style.display = "block-inline";
+        document.getElementById("upgrade5").style.display = "inline-block";
         document.getElementById("upgrade5").innerHTML = `Every upgrade (expect this one) and all generators become cheaper <br> Currently: x<sup>${notate(player.upgrade5.effect)}</sup> <br> Cost: <strong>${notate(player.upgrade5.cost)}</strong> points.`
     } else {
         document.getElementById("upgrade5").style.display = "none";
     };
     if (player.gupgrade15.bought == true) {
-        document.getElementById("upgrade6").style.display = "block-inline";
+        document.getElementById("upgrade6").style.display = "inline-block";
         document.getElementById("upgrade6").innerHTML = `You earn twice as many primary points as you earn now <br> Currently: x${notate2(OmegaNum.pow(2, player.upgrade6.level))} <br> Cost: <strong>${notate(player.upgrade6.cost)}</strong> points.`
     } else {
         document.getElementById("upgrade6").style.display = "none";
     };
+
     if (player.challenge1.completed == false) {
         document.getElementById("chal1").innerHTML = `Challenge 1 <br> <br> Sub-points effect is powered by x<sup>0.125</sup> <br> Goal: 1.00e21 in ${notate(player.challenge1.time)} seconds`;
         document.getElementById("chal2").style.display = `none`;
@@ -229,10 +230,11 @@ window.setInterval(function() {
     } else {
         document.getElementById("chal1").innerHTML = `Challenge 1 <br> <br> Sub-points effect is powered by x<sup>0.125</sup> <br> Reward: Sub-points translation improved to x<sup>0.4</sup>`;
         document.getElementById("chal1").style.backgroundColor = "lightgreen";
-        document.getElementById("chal2").style.display = `block-inline`;
+        document.getElementById("chal2").style.display = `inline-block`;
     };
     if (player.challenge2.completed == false) {
         document.getElementById("chal2").innerHTML = `Challenge 2 <br> <br> Automatic points earning becomes weakened <br> Goal: 1.00e60 in ${notate(player.challenge2.time)} seconds`;
+        document.getElementById("chal3").style.display = `none`;
         if (player.challenge2.active == false) {
             document.getElementById("chal2").style.backgroundColor = "lightgrey";
         } else {
@@ -241,9 +243,11 @@ window.setInterval(function() {
     } else {
         document.getElementById("chal2").innerHTML = `Challenge 2 <br> <br> Automatic points earning becomes weakened <br> Reward: Second upgrade's cost is reduced by x<sup>0.9</sup>.`;
         document.getElementById("chal2").style.backgroundColor = "lightgreen";
+        document.getElementById("chal3").style.display = `inline-block`;
     };
     if (player.challenge3.completed == false) {
         document.getElementById("chal3").innerHTML = `Challenge 3 <br> <br> 3<sup>rd</sup> upgrade does nothing <br> Goal: 1.00e160 in ${notate(player.challenge3.time)} seconds`;
+        document.getElementById("chal4").style.display = `none`;
         if (player.challenge3.active == false) {
             document.getElementById("chal3").style.backgroundColor = "lightgrey";
         } else {
@@ -252,9 +256,11 @@ window.setInterval(function() {
     } else {
         document.getElementById("chal3").innerHTML = `Challenge 3 <br> <br> 3<sup>rd</sup> upgrade does nothing <br> Reward: Universes effect to money becomes bigger.`;
         document.getElementById("chal3").style.backgroundColor = "lightgreen";
+        document.getElementById("chal4").style.display = `inline-block`;
     };
     if (player.challenge4.completed == false) {
         document.getElementById("chal4").innerHTML = `Challenge 4 <br> <br> 1<sup>st</sup> upgrade does nothing. <br> Automatic points earning becomes stronger. <br> Goal: 1.00e19 in ${notate(player.challenge4.time)} seconds`;
+        document.getElementById("chal5").style.display = `none`;
         if (player.challenge4.active == false) {
             document.getElementById("chal4").style.backgroundColor = "lightgrey";
         } else {
@@ -263,9 +269,11 @@ window.setInterval(function() {
     } else {
         document.getElementById("chal4").innerHTML = `Challenge 4 <br> <br> 1<sup>st</sup> upgrade does nothing. <br> Automatic points earning becomes stronger. <br> Reward: You gain 15 times more prestige points.`;
         document.getElementById("chal4").style.backgroundColor = "lightgreen";
+        document.getElementById("chal5").style.display = `inline-block`;
     };
     if (player.challenge5.completed == false) {
         document.getElementById("chal5").innerHTML = `Challenge 5 <br> <br> Challenges 1 and 2 are combined <br> Goal: 1.00e63 in ${notate(player.challenge5.time)} seconds`;
+        document.getElementById("chal6").style.display = `none`;
         if (player.challenge5.active == false) {
             document.getElementById("chal5").style.backgroundColor = "lightgrey";
         } else {
@@ -274,6 +282,7 @@ window.setInterval(function() {
     } else {
         document.getElementById("chal5").innerHTML = `Challenge 5 <br> <br> Challenges 1 and 2 are combined <br> Reward: Sub-points translation improved to x<sup>0.75</sup>`;
         document.getElementById("chal5").style.backgroundColor = "lightgreen";
+        document.getElementById("chal6").style.display = `inline-block`;
     };
     if (player.challenge6.completed == false) {
         document.getElementById("chal6").innerHTML = `Challenge 6 <br> <br> Universes boost only 2x to money. 4th upgrade is disabled. Sub-points effect becomes worse. <br> Goal: 1.00e162 in ${player.challenge6.time.toFixed(1)} seconds`;
