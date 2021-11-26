@@ -404,14 +404,14 @@ window.setInterval (function() {
         };
     };
 
-    if (player.challenge3.completed = true) {
+    if (player.challenge3.completed == true) {
         if (player.challenge6.active == false) {
             player.universes.effect = 100;
         } else {
             player.universes.effect = 2;
-        }
+        };
     } else {
-        player.universes.effect = 4;
+        player.universes.effect = 5;
     };
 
     // challenge 4
@@ -444,7 +444,7 @@ window.setInterval (function() {
         };
     };
 
-    // challenge 5
+    // challenge 6
     if (player.challenge6.active == true) {
         player.challenge6.time = OmegaNum.sub(player.challenge6.time, 0.02);
         if (OmegaNum.cmp(player.money.amount, new OmegaNum("1e162")) >= 0) {
@@ -888,4 +888,13 @@ function reset() {
     player.challenge3.active = false;
     player.challenge3.completed = false;
     player.challenge3.time = 100;
+    player.challenge4.active = false;
+    player.challenge4.completed = false;
+    player.challenge4.time = 30;
+    player.challenge5.active = false;
+    player.challenge5.completed = false;
+    player.challenge5.time = 60;
+    player.challenge6.active = false;
+    player.challenge6.completed = false;
+    player.challenge6.time = false;
 };
