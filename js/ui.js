@@ -330,6 +330,7 @@ window.setInterval(function() {
     };
     if (player.challenge6.completed == false) {
         document.getElementById("chal6").innerHTML = `Challenge 6 <br> <br> Universes boost only 2x to money. 4th upgrade is disabled. Sub-points effect becomes worse. <br> Goal: 5.00e167 in ${player.challenge6.time.toFixed(1)} seconds`;
+        document.getElementById("chal7").style.display = `none`;
         if (player.challenge6.active == false) {
             document.getElementById("chal6").style.backgroundColor = "lightgrey";
         } else {
@@ -342,6 +343,7 @@ window.setInterval(function() {
     };
     if (player.challenge7.completed == false) {
         document.getElementById("chal7").innerHTML = `Challenge 7 <br> <br> There are anti-points. If they exceed your points amount, you'll quit the challenge. <br> Goal: 1.00e280 in ${player.challenge7.time.toFixed(1)} seconds`;
+        document.getElementById("chal8").style.display = `none`;
         if (player.challenge7.active == false) {
             document.getElementById("chal7").style.backgroundColor = "lightgrey";
         } else {
