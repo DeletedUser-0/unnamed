@@ -18,7 +18,7 @@ button {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#automoney {
+#automoney, #gentotal, #chalwarning {
     text-align: center;
 }
 
@@ -180,44 +180,6 @@ button {
     }
 }
 
-#gentotal {
-    text-align: center;
-}
-
-#gen1, #gen2, #gen3 {
-    position: relative;
-    top: 20px;
-    align-items: center;
-}
-
-#gen1amount, #gen2amount {
-    display: block;
-    text-align: center;
-    position: relative;
-    bottom: 8px;
-    align-items: center;
-}
-
-#gen3amount {
-    display: block;
-    text-align: center;
-    position: relative;
-}
-
-#gen1cost, #gen2cost{
-    float: right;
-    align-items: center;
-    position: relative;
-    bottom: 20px;
-}
-
-#gen3cost {
-    float: right;
-    align-items: center;
-    position: relative;
-    bottom: 16px;
-}
-
 #gen1mult, #gen2mult {
     color: gray;
     position: relative;
@@ -234,7 +196,23 @@ button {
     font-size: 10px;
 }
 
-#chal6 {
+#chal6, #chal7 {
     width: 310px;
     font-size: 67%;
+}
+
+table {
+    width: 100%;
+}
+
+#atomstotal {
+    text-align: center;
+}
+
+#atomuniverse {
+    float: center;
+}
+
+.center {
+    justify-content: center;
 }
