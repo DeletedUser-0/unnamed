@@ -19,6 +19,7 @@
             <button class="tablinks" onclick="openCity(event, 'Points')" id="points">Points</button>
             <button class="tablinks" onclick="openCity(event, 'Primary')">Primary</button>
             <button class="tablinks" onclick="openCity(event, 'Challenges')" id="chal">Challenges</button>
+            <button class="tablinks" onclick="openCity(event, 'Atoms')" id="atoms">Atoms</button>
         </div>
         <br>
         <br>
@@ -42,12 +43,27 @@
             <p id="primary"></p>
             <p id="gentotal"></p>
             <div id="generators">
-                <span id="gen1"></span><span id="gen1amount"></span><button id="gen1cost" onclick="gen1()"></button>
-                <p id="gen1mult"></p>
-                <span id="gen2"></span><span id="gen2amount"></span><button id="gen2cost" onclick="gen2()"></button>
-                <p id="gen2mult"></p>
-                <span id="gen3"></span><span id="gen3amount"></span><button id="gen3cost" onclick="gen3()"></button>
-                <p id="gen3mult"></p>
+            <br>
+                <table>
+                    <tr>
+                        <td id="gen1"></td>
+                        <td id="gen1amount"></td>
+                        <td id="gen1mult"></td>
+                        <td><button id="gen1cost" onclick="gen1()"></button></td>
+                    </tr>
+                    <tr>
+                        <td id="gen2"></td>
+                        <td id="gen2amount"></td>
+                        <td id="gen2mult"></td>
+                        <td><button id="gen2cost" onclick="gen2()"></button></td>
+                    </tr>
+                    <tr>
+                        <td id="gen3"></td>
+                        <td id="gen3amount"></td>
+                        <td id="gen3mult"></td>
+                        <td><button id="gen3cost" onclick="gen3()"></button></td>
+                    </tr>
+                </table>
             </div>
             <div id="gupgrades">
                 <br>
@@ -70,15 +86,32 @@
                 <button id="gupgrade16" onclick="gupgrade16()"></button>
                 <button id="gupgrade17" onclick="gupgrade17()"></button>
                 <button id="gupgrade18" onclick="gupgrade18()"></button>
+                <button id="gupgrade19" onclick="gupgrade19()"></button>
+                <button id="gupgrade20" onclick="gupgrade20()"></button>
             </div>
         </div>
         <div id="Challenges" class="tabcontent">
+            <p id="chalwarning"><b>Warning:</b> When entering a challenge, all your original primary values (except generators, gen. upgrades and challenges) will be reset!</p>
+            <br>
             <button id="chal1" onclick="challenge1enter()"></button>
             <button id="chal2" onclick="challenge2enter()"></button>
             <button id="chal3" onclick="challenge3enter()"></button>
             <button id="chal4" onclick="challenge4enter()"></button>
             <button id="chal5" onclick="challenge5enter()"></button>
             <button id="chal6" onclick="challenge6enter()"></button>
+            <button id="chal7" onclick="challenge7enter()"></button>
+            <button id="chal8" onclick="challenge8enter()"></button>
+        </div>
+        <div id="Atoms" class="tabcontent">
+            <p id="atomstotal"></p>
+            <br>
+            <button id="atomchance" onclick="atomchance()" class="center"></button>
+            <button id="atommult" onclick="atommult()" class="center"></button>
+            <button id="atomtime" onclick="atomtime()" class="center"></button>
+            <br>
+            <br>
+            <button id="atomexp" onclick="atomexp()" class="center"></button>
+            <button id="atomuniverse" onclick="atomuniverse()" class="center"></button>
         </div>
     </body>
 </html>
