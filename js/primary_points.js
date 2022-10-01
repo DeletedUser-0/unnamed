@@ -8,33 +8,33 @@ window.setInterval(function() {
     if (player.challenge4.completed == false) {
         if (player.gupgrade5.bought == false) {
             if (player.gupgrade6.bought == true) {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             } else {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             };
         } else {
             if (player.gupgrade6.bought == true) {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(player.upgrade6.effect).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(player.upgrade6.effect).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             } else {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             };
         };
     } else {
         if (player.gupgrade5.bought == false) {
             if (player.gupgrade6.bought == true) {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             } else {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             };
         } else {
             if (player.gupgrade6.bought == true) {
                 if (player.gupgrade14.bought == true) {
-                    player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                    player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
                 } else {
-                    player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                    player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(OmegaNum.log10(player.primary.amount).pow(1.5)).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
                 };
             } else {
-                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(player.atoms.amount).pow(2.2).pow(player.atoms.exp));
+                player.primary.earn = OmegaNum.pow(1.02, OmegaNum.log10(player.money.amount)).div(OmegaNum.pow(1.02, 308.255)).times(30).times(15).times(player.upgrade6.effect).times(15).times(OmegaNum.log10(OmegaNum.add(player.atoms.amount, 1)).pow(2.2).pow(player.atoms.exp));
             };
         };
 
