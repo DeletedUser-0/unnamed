@@ -59,6 +59,7 @@ window.setInterval(function() {
         upgrade5();
         upgrade6();
         upgrade3();
+        universes();
     };
     if (player.gupgrade10.bought == true) {
         if (OmegaNum.cmp(player.primary.total, 1e100) <= 0) {
