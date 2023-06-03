@@ -42,7 +42,7 @@ window.setInterval(function() {
         } else if (player.challenge6.active == true) {
             document.getElementById("primary").innerHTML = `Reach <b>5.00e167</b> points in <b>${notate(player.challenge6.time)}</b> sec`;
         } else if (player.challenge7.active == true) {
-            document.getElementById("primary").innerHTML = `Reach <b>1.00e265</b> points in <b>${notate(player.challenge7.time)}</b> sec`;
+            document.getElementById("primary").innerHTML = `Reach <b>1.00e280</b> points in <b>${notate(player.challenge7.time)}</b> sec`;
         } else if (player.challenge8.active == true) {
             document.getElementById("primary").innerHTML = `Reach <b>1.00e1150</b> points in <b>${notate(player.challenge8.time)}</b> sec`;
         };
