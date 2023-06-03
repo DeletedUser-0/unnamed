@@ -376,7 +376,11 @@ window.setInterval (function() {
         } else {
             player.gen2.mult = OmegaNum.pow(14, OmegaNum.sub(player.gen2.level, 1)).times(1e24);
         };
-        player.gen3.mult = OmegaNum.pow(9, OmegaNum.sub(player.gen3.level, 1));
+        if (player.gupgrade16.bought == false) {
+            player.gen3.mult = OmegaNum.pow(9, OmegaNum.sub(player.gen3.level, 1));
+        } else {
+            player.gen3.mult = OmegaNum.pow(14, OmegaNum.sub(player.gen2.level, 1)).times(1e13);
+        }
     } else {
         player.gen1.mult = OmegaNum.pow(4, OmegaNum.sub(player.gen1.level, 1));
         player.gen2.mult = OmegaNum.pow(3.2, OmegaNum.sub(player.gen2.level, 1));
