@@ -355,7 +355,7 @@ window.setInterval(function() {
         document.getElementById("chal8").style.display = `inline-block`;
     };
     if (player.challenge8.completed == false) {
-        document.getElementById("chal8").innerHTML = `Challenge 8 <br> <br> Automatic points earning is disabled. <br> 2<sup>nd</sup> and 3<sup>rd</sup> upgrades don't do anything. <br> Goal: x points in ${player.challenge8.time.toFixed(1)} seconds`;
+        document.getElementById("chal8").innerHTML = `Challenge 8 <br> <br> Automatic points earning is disabled. <br> 2<sup>nd</sup> and 3<sup>rd</sup> upgrades don't do anything. <br> Goal: 1.00e1150 points in ${player.challenge8.time.toFixed(1)} seconds`;
         if (player.challenge8.active == false) {
             document.getElementById("chal8").style.backgroundColor = "lightgrey";
         } else {
